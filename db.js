@@ -8,6 +8,8 @@ const client = new Client({
     database: process.env.database,
 })
 
+
+
 //mostra se a conexão foi bem sucedida
 const connectDB = async () => {
     client.connect().then(() => {
@@ -16,4 +18,16 @@ const connectDB = async () => {
         console.error('Erro ao conectar na db')
     })
 }
-module.exports = connectDB
+
+const setup = async (req, res) => {
+    try{
+        const data = await client.query('CREATE TABLE usuarios (nome VARCHAR(100), email VARCHAR(50), id SERIAL PRIMARY KEY, senha VARCHAR(40) ) ')
+        res.status(200).json({msg: 'A TABELA FOI CRIADA'})
+    } catch(err) {
+        console.log('Erro ao criar a tabela')
+        res.status(500)
+    }
+}
+
+
+module.exports = {connectDB, setup, client}

@@ -1,18 +1,17 @@
 const express = require('express')
 require('dotenv').config()
-const connectDB = require('./db')
+const {connectDB} = require('./db')
+const rotas = require('./rotas')
 
 const app = express()
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 connectDB()
 
-//localhost na internet
-app.get('/teste-api', function(req, res){
-    res.send('Nossa api está funcionando')
-})
+app.use('/usuarios', rotas)
 
 app.listen(8000)
-
 
 
 
